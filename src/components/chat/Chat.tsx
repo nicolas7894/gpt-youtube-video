@@ -22,7 +22,7 @@ const Chat = () => {
         type: 'apiMessage',
       },
       {
-        message: 'Eg: What is the video about?',
+        message: 'E.g: What is the video about?',
         type: 'apiMessage',
       },
     ],
@@ -103,6 +103,8 @@ const Chat = () => {
       console.log('error', error)
     }
   }
+
+  
 
   //prevent empty submissions
   const handleEnter = (e: any) => {
