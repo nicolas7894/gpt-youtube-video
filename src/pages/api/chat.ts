@@ -1,10 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
-import { PineconeStore } from 'langchain/vectorstores/pinecone'
-import { makeChain } from '@/utils/makechain'
 import { pinecone } from '@/utils/pinecone-client'
 import { PINECONE_INDEX_NAME } from '@/config/pinecone'
-
+import { PineconeStore } from 'langchain/vectorstores/pinecone'
+import { makeChain } from '@/utils/makechain'
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -19,13 +18,11 @@ export default async function handler(
   if (!question || !youtubeId) {
     return res.status(400).json({ message: 'Request error' })
   }
-  // OpenAI recommends replacing newlines with spaces for best results
   const sanitizedQuestion = question.trim().replaceAll('\n', ' ')
 
   try {
     const index = pinecone.Index(PINECONE_INDEX_NAME)
 
-    /* create vectorstore*/
     const vectorStore = await PineconeStore.fromExistingIndex(
       new OpenAIEmbeddings({}),
       {
@@ -35,9 +32,8 @@ export default async function handler(
       }
     )
 
-    //create chain
     const chain = makeChain(vectorStore)
-    //Ask a question using chat history
+
     const response = await chain.call({
       question: sanitizedQuestion,
       chat_history: history || [],
