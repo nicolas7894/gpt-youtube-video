@@ -60,7 +60,7 @@ const Home = () => {
         )}
         <div className="flex justify-end mt-4">
           <button
-            className="flex bg-blue-950 hover:bg-blue-800  text-white py-2 px-4 rounded-md shadow-md"
+            className="flex bg-blue-950 hover:bg-blue-900  text-white py-2 px-4 rounded-md shadow-md"
             onClick={loadVideo}
             disabled={isLoading || youtubeUrl === ''}
           >

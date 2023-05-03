@@ -8,7 +8,7 @@ const BotBubble = ({ message }: Props) => {
         B
       </div>
       <div className="relative ml-3 text-sm bg-gray-200 py-2 px-4 shadow rounded-xl">
-        <div style={{ whiteSpace: 'pre-wrap' }}>{message}</div>
+        <article className="prose prose-slate">{message}</article>
       </div>
     </div>
   )
