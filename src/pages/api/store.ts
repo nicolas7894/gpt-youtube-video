@@ -8,32 +8,6 @@ import { pinecone } from '@/utils/pinecone-client'
 import { PINECONE_INDEX_NAME } from '@/config/pinecone'
 import { OPENAI_API_KEY } from '@/config/openAi'
 
-const storeTranscript = async (text: string): Promise<PineconeStore> => {
-  const textSplitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 1000,
-    chunkOverlap: 200,
-  })
-  const docs = await textSplitter.createDocuments([text])
-  const embeddings = new OpenAIEmbeddings({
-    openAIApiKey: OPENAI_API_KEY,
-  })
-
-  const index = pinecone.Index(PINECONE_INDEX_NAME)
-
-  return await PineconeStore.fromDocuments(docs, embeddings, {
-    pineconeIndex: index,
-    namespace: 'test-2',
-    textKey: 'text',
-  })
-}
-
-const retrieveVectoreStore = async (): Promise<PineconeStore> => {
-  return await PineconeStore.fromExistingIndex(new OpenAIEmbeddings({}), {
-    pineconeIndex: pinecone.Index(PINECONE_INDEX_NAME),
-    namespace: 'test-2',
-  })
-}
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -57,6 +31,10 @@ export default async function handler(
     const index = pinecone.Index(PINECONE_INDEX_NAME)
 
     const transcript = transcriptResponse.map((t) => t.text.trim()).join(' ')
+
+    const words = transcript.split(/\s+/); // split the text into an array of words
+const wordCount = words.length; // get the number of words in the array
+console.log(wordCount); // output: 7
 
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: 1000,
