@@ -53,7 +53,7 @@ const Home = () => {
           GPTUBE
         </h2>
         <p className="mt-2 text-lg leading-8 text-gray-600">
-          Chat with youtube video
+          Chat with youtube videos
         </p>
       </div>
       <form
