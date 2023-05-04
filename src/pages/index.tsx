@@ -92,7 +92,7 @@ const Home = () => {
             className="relative flex items-center justify-center w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             {isLoading && <Loader />}
-            <div className="flex items-center justify-center">Let's chat</div>
+            <div className="flex items-center justify-center">Let&apos;s chat</div>
           </button>
         </div>
       </form>
