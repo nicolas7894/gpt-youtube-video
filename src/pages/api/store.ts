@@ -32,10 +32,6 @@ export default async function handler(
 
     const transcript = transcriptResponse.map((t) => t.text.trim()).join(' ')
 
-    const words = transcript.split(/\s+/); // split the text into an array of words
-const wordCount = words.length; // get the number of words in the array
-console.log(wordCount); // output: 7
-
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: 1000,
       chunkOverlap: 200,
