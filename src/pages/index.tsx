@@ -102,7 +102,7 @@ const Home = () => {
           target="_blank"
           className="border flex my-8 float-left px-5 py-2 bg-blue text-black text-sm font-bold tracking-wide rounded-full focus:outline-none"
         >
-          Support me on twitter
+          Follow me on twitter
           <svg
             className="ml-3 w-6 h-6 text-blue-300 fill-current"
             xmlns="http://www.w3.org/2000/svg"
