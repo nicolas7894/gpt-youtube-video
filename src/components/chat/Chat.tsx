@@ -104,8 +104,6 @@ const Chat = () => {
     }
   }
 
-  
-
   //prevent empty submissions
   const handleEnter = (e: any) => {
     if (e.key === 'Enter' && query) {
@@ -173,7 +171,7 @@ const Chat = () => {
                         type="text"
                         onChange={(e) => setQuery(e.target.value)}
                         value={query}
-                        className="flex w-full border rounded-xl focus:outline-none focus:border-border-black pl-4 h-10"
+                        className="flex w-full border rounded-xl focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-600 pl-4 h-10"
                       />
                     </div>
                   </div>
@@ -181,7 +179,7 @@ const Chat = () => {
                     <button
                       disabled={loading}
                       type="submit"
-                      className="flex items-center justify-center bg-blue-950 hover:bg-blue-800 rounded-lg text-white px-4 py-1 flex-shrink-0"
+                      className="flex items-center justify-center bg-indigo-600 hover:bg-blue-800 rounded-lg text-white px-4 py-1 flex-shrink-0"
                     >
                       <span>Send</span>
                       <span className="ml-2">
