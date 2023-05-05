@@ -22,6 +22,7 @@ const BotBubble = ({ message, youtubeId }: Props) => {
             {message.sourceDocs.map((doc: any, index: number) => {
               return (
                 <a
+                  key={index}
                   href={`https://www.youtube.com/watch?v=${youtubeId}&t=${getOffsetInSeconde(
                     doc
                   )}s`}
