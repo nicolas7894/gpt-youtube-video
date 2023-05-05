@@ -18,6 +18,7 @@ export default async function handler(
   if (!question || !youtubeId) {
     return res.status(400).json({ message: 'Request error' })
   }
+
   const sanitizedQuestion = question.trim().replaceAll('\n', ' ')
 
   try {

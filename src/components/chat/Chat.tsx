@@ -4,6 +4,7 @@ import BotBubble from './BotBubble'
 import UserBubble from './UserBubble'
 import { useRouter } from 'next/router'
 import BubbleLoading from './BubbleLoading'
+
 const Chat = () => {
   const router = useRouter()
   const { youtubeId } = router.query
@@ -18,12 +19,14 @@ const Chat = () => {
   }>({
     messages: [
       {
-        message: 'Hi, what would you like to learn about this youtube video?',
+        text: 'Hi, what would you like to learn about this youtube video?',
         type: 'apiMessage',
+        sourceDocs: [],
       },
       {
-        message: 'E.g: What is the video about?',
+        text: 'E.g: What is the video about?',
         type: 'apiMessage',
+        sourceDocs: [],
       },
     ],
     history: [],
@@ -55,7 +58,7 @@ const Chat = () => {
         ...state.messages,
         {
           type: 'userMessage',
-          message: question,
+          text: question,
         },
       ],
     }))
@@ -86,7 +89,7 @@ const Chat = () => {
             ...state.messages,
             {
               type: 'apiMessage',
-              message: data.text,
+              text: data.text,
               sourceDocs: data.sourceDocuments,
             },
           ],
@@ -100,7 +103,6 @@ const Chat = () => {
     } catch (error) {
       setLoading(false)
       setError('An error occurred while fetching the data. Please try again.')
-      console.log('error', error)
     }
   }
 
@@ -117,14 +119,14 @@ const Chat = () => {
     if (message.type == 'apiMessage') {
       return (
         <div key={key} className="col-start-1 col-end-8 p-3 rounded-lg">
-          <BotBubble message={message.message} />
+          <BotBubble message={message} youtubeId={youtubeId?.toString() || ""} />
         </div>
       )
     } else {
       return (
         <div key={key} className="col-start-6 col-end-13 p-3 rounded-lg">
           <div className="flex items-center justify-start flex-row-reverse">
-            <UserBubble message={message.message} />
+            <UserBubble message={message.text} />
           </div>
         </div>
       )

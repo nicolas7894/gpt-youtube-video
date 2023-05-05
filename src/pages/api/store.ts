@@ -7,6 +7,26 @@ import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
 import { pinecone } from '@/utils/pinecone-client'
 import { PINECONE_INDEX_NAME } from '@/config/pinecone'
 import { OPENAI_API_KEY } from '@/config/openAi'
+import { Document } from 'langchain/document'
+
+const makeDoc = (transcript: TranscriptResponse[]): Document[] => {
+  let docs = []
+  const chunk = 10
+  const chunkOverlap = 1
+  for (let i = 0; i < transcript.length; i += chunk) {
+    let doc = { metadata: { offset: 0 }, pageContent: '' }
+    doc.metadata = { offset: transcript[i].offset }
+    const sliceStart = i - chunkOverlap < 0 ? 0 : i - chunkOverlap
+    const sliceEnd =
+      i + chunk > transcript.length ? transcript.length : i + chunk
+    doc.pageContent = transcript
+      .slice(sliceStart, sliceEnd)
+      .map((t) => t.text.trim())
+      .join(' ')
+    docs.push(new Document(doc))
+  }
+  return docs
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,7 +41,7 @@ export default async function handler(
 
   try {
     const transcriptResponse: TranscriptResponse[] =
-      await YoutubeTranscript.fetchTranscript(videoId)
+      await YoutubeTranscript.fetchTranscript(videoId, { lang: 'en' })
 
     if (!transcriptResponse || transcriptResponse.length === 0) {
       res.status(404).json({ error: 'No captions found for this video' })
@@ -30,16 +50,11 @@ export default async function handler(
 
     const index = pinecone.Index(PINECONE_INDEX_NAME)
 
-    const transcript = transcriptResponse.map((t) => t.text.trim()).join(' ')
-
-    const textSplitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 1000,
-      chunkOverlap: 200,
-    })
-    const docs = await textSplitter.createDocuments([transcript])
     const embeddings = new OpenAIEmbeddings({
       openAIApiKey: OPENAI_API_KEY,
     })
+
+    const docs = makeDoc(transcriptResponse)
 
     await PineconeStore.fromDocuments(docs, embeddings, {
       pineconeIndex: index,
@@ -49,6 +64,7 @@ export default async function handler(
 
     res.status(200).json({ success: true })
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: 'Error fetching captions' })
   }
 }
