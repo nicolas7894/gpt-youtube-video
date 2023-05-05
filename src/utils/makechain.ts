@@ -33,7 +33,7 @@ export const makeChain = (vectorstore: PineconeStore) => {
   })
 
   const docChain = loadQAChain(
-    new OpenAI({ temperature: 0, modelName: 'gpt-3.5-turbo'}),
+    new OpenAI({ temperature: 0, modelName: 'gpt-3.5-turbo' }),
     {
       prompt: QA_PROMPT,
     }
@@ -43,6 +43,7 @@ export const makeChain = (vectorstore: PineconeStore) => {
     retriever: vectorstore.asRetriever(),
     combineDocumentsChain: docChain,
     questionGeneratorChain: questionGenerator,
+    returnSourceDocuments: true,
   }
 
   return new ConversationalRetrievalQAChain(input)
