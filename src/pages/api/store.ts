@@ -21,7 +21,7 @@ const makeDoc = (transcript: TranscriptResponse[]): Document[] => {
       i + chunk > transcript.length ? transcript.length : i + chunk
     doc.pageContent = transcript
       .slice(sliceStart, sliceEnd)
-      .map((t) => t.text.trim())
+      .map((t) => t.text?.trim())
       .join(' ')
     docs.push(new Document(doc))
   }
@@ -32,12 +32,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+
   const videoId = req.query.videoId as string | undefined
 
   if (!videoId) {
     res.status(400).json({ error: 'Video ID is required' })
     return
   }
+
 
   try {
     const transcriptResponse: TranscriptResponse[] =
@@ -47,6 +49,8 @@ export default async function handler(
       res.status(404).json({ error: 'No captions found for this video' })
       return
     }
+
+
 
     const index = pinecone.Index(PINECONE_INDEX_NAME)
 
